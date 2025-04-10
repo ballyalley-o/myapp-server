@@ -17,6 +17,13 @@ class ErrorRequestHandler extends Error {
     }
 }
 
+export class ErrorResponse extends Error {
+   constructor(message: string, public statusCode: number) {
+      super(message)
+      this.statusCode = statusCode
+   }
+}
+
 export const errorHandler = (err: ErrorRequestHandler, _req: Request, res: Response, _next: NextFunction) => {
  let statusCode = res.statusCode === 0 ? 500 : res.statusCode
  let message    = err.message
