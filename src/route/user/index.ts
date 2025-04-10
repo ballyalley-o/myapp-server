@@ -1,5 +1,5 @@
 import { Application } from 'express'
-import { connect } from 'misc'
+import { connect } from 'utility'
 import userRoute from 'route/user/user'
 
 export const linkUserRoute = (app: Application, apiVer: string) => {
