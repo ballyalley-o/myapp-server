@@ -15,3 +15,11 @@ export const connectDb = async (isConnected: boolean) => {
         process.exit()
     }
 }
+
+const createIndex = <T extends Record<string, number>>(index: T): IndexType<T> => {
+  return index as IndexType<T>
+}
+
+export const DB_INDEX = {
+  USER: createIndex({ firstname: 1 })
+}
