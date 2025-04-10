@@ -1,5 +1,5 @@
 import { GLOBAL } from 'config/global'
-import { connect } from 'misc'
+import { connect } from 'utility'
 
 export const API = '/api'
 
