@@ -1,5 +1,5 @@
 import type { Connection } from 'mongoose'
-import { tenMin } from 'constant'
+import { tenMin, oneDay } from 'constant'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -25,6 +25,6 @@ export const GLOBAL = {
   LOG_LEVEL        : 'info',
   LOG_FILENAME_ERR : 'log/error.log',
   LOG_FILENAME_COMB: 'log/combined.log',
-  JWT_EXP          : process.env.JWT_EXP,
-  JWT_SECRET       : process.env.JWT_SECRET,
+  JWT_EXP          : oneDay,
+  JWT_SECRET       : process.env.JWT_SECRET || '',
 }
