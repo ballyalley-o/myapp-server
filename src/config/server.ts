@@ -14,7 +14,7 @@ import rateLimit from 'express-rate-limit'
 import { ServerStatic, mainRoute } from 'route'
 import { notFound, errorHandler, corsConfig, xssHandler } from 'middleware'
 import { KEY } from 'constant'
-import { connect } from 'misc'
+import { connect } from 'utility'
 import { PATH_DIR } from './dir'
 
 const TAG = 'App'
