@@ -1,57 +1,57 @@
 import { Schema, model } from 'mongoose'
-import { GLOBAL } from 'myapp'
+import { DB_INDEX, GLOBAL } from 'myapp'
 import bcrypt from 'bcrypt'
+import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
-import { REGEX } from 'constant'
+import { oneDayFromNow, REGEX } from 'constant'
+import { getLocale } from 'utility'
 
 
 const TAG = 'User'
-
-const UserSchema = new Schema<IUser>(
-    {
-        firstname: {
-            type    : String,
-            required: [true, 'Firstname is required'],
-            min     : 3,
-            max     : 20,
-            validate: {
-                validator: function(v: string) {
-                    return v.length > 3 && v.length < 20
-                },
-                message: (props) => `Firstname length (${props.value.length}) exceeds the limit of characters`
-            }
+const UserSchema: Schema<IUser> = new Schema<IUser>(
+  {
+    firstname: {
+      type: String,
+      required: [true, getLocale('validation.default.required', { field: 'Firstname' })],
+      min: 3,
+      max: 20,
+      validate: {
+        validator: function (v: string) {
+          return v.length > 3 && v.length < 20
         },
-
-        lastname: {
-            type: String,
-            max: 20,
-            validate: {
-                validator: function(v: string) {
-                    return v.length < 20
-                },
-                message: (props) => `Lastname length (${props.value.length}) exceeds the limit of characters`
-            }
-        },
-        email: {
-            type    : String,
-            required: [true, 'Email is required'],
-            unique  : true,
-            match: [REGEX.EMAIL, 'Invalid email']
-        },
-        password: {
-            type    : String,
-            required: [true, 'Password is required'],
-            min     : 6,
-            select  : false
-        },
-
+        message: (props) => getLocale('validation.default.length', { field: 'Firstname', value: props.value.length, min: 3, max: 20 }),
+      },
     },
-    {
-        toJSON    : { virtuals: true },
-        toObject  : { virtuals: true },
-        collection: TAG,
-        timestamps: true
-    }
+
+    lastname: {
+      type: String,
+      max: 20,
+      validate: {
+        validator: function (v: string) {
+          return v.length < 20
+        },
+        message: (props) => getLocale('validation.default.max_length', { field: 'Lastname', value: props.value.length }),
+      },
+    },
+    email: {
+      type: String,
+      required: [true, getLocale('validation.default.length', { field: 'Email' })],
+      unique: [true, getLocale('validation.default.unique', { field: 'Email' })],
+      match: [REGEX.EMAIL, getLocale('validation.default.invalid', { field: 'email' })],
+    },
+    password: {
+      type: String,
+      required: [true, getLocale('validation.default.length', { field: 'Password' })],
+      min: 6,
+      select: false,
+    },
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    collection: TAG,
+    timestamps: true,
+  }
 )
 
 UserSchema.pre('save', async function(next) {
@@ -62,8 +62,23 @@ UserSchema.pre('save', async function(next) {
           this.password = await bcrypt.hash(this.password, salt)
 })
 
-UserSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id }, GLOBAL.JWT_SECRET || '', {
-    expiresIn: GLOBAL.JWT_EXP,
-  })
+// UserSchema.methods.getSignedJwtToken = function () {
+//   return jwt.sign({ id: this._id }, GLOBAL.JWT_SECRET || '', {
+//     expiresIn: GLOBAL.JWT_EXP,
+//   })
+// }
+
+UserSchema.methods.matchPassword = async function (enteredPassword: string) {
+    return await bcrypt.compare(enteredPassword, this.password)
 }
+
+UserSchema.methods.getResetPasswordToken = function () {
+    const resetToken = crypto.randomBytes(20).toString(GLOBAL.ENCRYPTION.ENCODING as BufferEncoding)
+
+    this.resetPasswordToken  = crypto.createHash(GLOBAL.ENCRYPTION.ALG).update(resetToken).digest(GLOBAL.ENCRYPTION.ENCODING as crypto.BinaryToTextEncoding)
+    this.resetPasswordExpire = oneDayFromNow
+    return resetToken
+}
+
+UserSchema.index(DB_INDEX.USER)
+export default model(TAG, UserSchema)
