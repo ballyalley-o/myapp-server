@@ -9,7 +9,7 @@ router.route('/')
 
 router.route('/:id')
 .get((_req: Request, res: Response, _next: NextFunction) => { res.send({ message: 'GET request to /:id' })})
-.put((_req: Request, res: Response, next: NextFunction) => { res.send({ message: 'PUT request to /:id' })})
+.put((_req: Request, res: Response, _next: NextFunction) => { res.send({ message: 'PUT request to /:id' })})
 .delete((_req: Request, res: Response, _next: NextFunction) => { res.send({ message: 'DELETE request to /:id' })})
 
 
