@@ -1,6 +1,6 @@
 import { PATH_DIR } from 'config/dir'
 import express, { Router } from 'express'
-import { RESPONSE } from 'constant'
+import { Resp } from 'constant'
 
 class ServerStatic {
   private static _router: Router
@@ -13,7 +13,7 @@ class ServerStatic {
   }
 
   static welcome() {
-    this._router?.get(PATH_DIR.API_WELCOME, RESPONSE.SERVER)
+    this._router?.get(PATH_DIR.API_WELCOME, Resp.Server)
   }
 }
 
