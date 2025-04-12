@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken'
 import { oneDayFromNow, REGEX } from 'constant'
 import { getLocale } from 'utility'
 
-
 const TAG = 'User'
 const UserSchema: Schema<IUser> = new Schema<IUser>(
   {
@@ -44,7 +43,7 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
       required: [true, getLocale('validation.default.length', { field: 'Password' })],
       min: 6,
       select: false,
-    },
+    }
   },
   {
     toJSON    : { virtuals: true },
