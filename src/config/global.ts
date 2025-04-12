@@ -25,6 +25,10 @@ export const GLOBAL = {
   LOG_LEVEL        : 'info',
   LOG_FILENAME_ERR : 'log/error.log',
   LOG_FILENAME_COMB: 'log/combined.log',
+  PAGINATION       : {
+    DEFAULT_PAGE: 1,
+    LIMIT       : 25
+  },
   JWT_EXP          : oneDay,
   JWT_SECRET       : process.env.JWT_SECRET || '',
 }
