@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { GLOBAL } from 'myapp'
-import { KEY, RESPONSE } from "constant"
+import { KEY, RESPONSE, CODE } from "constant"
 
 
 class ErrorRequestHandler extends Error {
@@ -18,10 +18,11 @@ class ErrorRequestHandler extends Error {
 }
 
 export class ErrorResponse extends Error {
-   constructor(message: string, public statusCode: number) {
-      super(message)
-      this.statusCode = statusCode
-   }
+  constructor(message: string, public code: CODE, public details?: unknown) {
+    super(message)
+    this.code    = code
+    this.details = details
+  }
 }
 
 export const errorHandler = (err: ErrorRequestHandler, _req: Request, res: Response, _next: NextFunction) => {
