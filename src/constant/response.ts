@@ -54,6 +54,14 @@ export class Resp extends AbstractLogger {
     }
   }
 
+  public static TokenResponse(cookieName: string, user: any) {
+    return {
+      success: true,
+      cookieName,
+      user,
+    }
+  }
+
   public static Error(message: string, code: CODE = CODE.BAD_REQUEST, details?: unknown) {
     return {
       success: false,
