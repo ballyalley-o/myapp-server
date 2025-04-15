@@ -106,5 +106,7 @@ export const RESPONSE = {
     FAILED_UPDATE   : 'Failed to update Record',
     FAILED_DELETE   : 'Failed to delete Record',
     RECORD_EXISTS   : 'Record already exists',
+    FAILED_SEED     : ' Failed to seed collection/s ',
+    FAILED_DESTROY  : ' Failed to destroy collection/s ',
   },
 }
