@@ -24,6 +24,8 @@ class App {
   private _env: string = GLOBAL.ENV
   isConnected: boolean = false
 
+  public static globalConfig = GLOBAL
+
   static app() {
     const newApp = new App()
     newApp.connectDb()
