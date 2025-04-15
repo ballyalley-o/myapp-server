@@ -1,8 +1,0 @@
-{
-    "validation": {
-        "default": {
-            "required": "{field} is required",
-            "length": "{field} length ({value}) must be between {min} and {max} characters"
-        }
-    }
-}
