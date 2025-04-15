@@ -1,16 +1,18 @@
-import { Request, Response, NextFunction } from 'express'
 import { Router } from 'express'
+import { UserController } from 'controller'
+import { advanceResult } from 'middleware'
+import { User } from 'model'
 
 const router = Router({ mergeParams: true })
 
 router.route('/')
-.get((_req: Request, res: Response, _next: NextFunction) => { res.send({ message: 'GET request to /' })})
-.post((_req: Request, res: Response, _next: NextFunction) => { res.send({ message: 'POST request to /' })})
+.get(advanceResult(User, 'email'), UserController.getUsers)
+.post(UserController.createUser)
 
 router.route('/:id')
-.get((_req: Request, res: Response, _next: NextFunction) => { res.send({ message: 'GET request to /:id' })})
-.put((_req: Request, res: Response, _next: NextFunction) => { res.send({ message: 'PUT request to /:id' })})
-.delete((_req: Request, res: Response, _next: NextFunction) => { res.send({ message: 'DELETE request to /:id' })})
+.get(UserController.getUser)
+.put(UserController.updateUser)
+.delete(UserController.deleteUser)
 
 
 /**
