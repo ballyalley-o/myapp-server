@@ -1,16 +1,18 @@
 {
   "name": "node-express",
   "version": "1.0.0",
-  "description": "Training building a NodeJs/TS Express app",
+  "description": "Training building a high performing, beautifully designed NodeJs/TS Express app",
   "main": "app.js",
   "type": "module",
   "scripts": {
     "start:run": "nodemon dist/app.js",
     "start": "concurrently npm:start:*",
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "sim": "node dist/sim.js -i",
+    "destroy": "node dist/sim.js -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Bally Lomibao",
+  "author": "Bally Lomibao <work@ballylomibao.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -27,6 +29,9 @@
     "@types/cookie-parser": "^1.4.8",
     "@types/hpp": "^0.2.6",
     "@types/jsonwebtoken": "^9.0.9",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "bson-objectid": "^2.0.4",
     "concurrently": "^9.1.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
