@@ -1,7 +1,9 @@
 import { Model } from 'mongoose'
+import { Response } from 'express'
+import { GLOBAL } from 'myapp'
 import { User } from 'model'
 import { ErrorResponse } from 'middleware'
-import { CODE, RESPONSE } from 'constant'
+import { CODE, KEY, RESPONSE, Resp } from 'constant'
 
 const TAG = 'Service'
 export class Service {
@@ -16,6 +18,21 @@ export class Service {
     if (record) {
       throw new ErrorResponse(errorMessage, errorCode)
     }
+  }
+
+  public static async sendTokenResponse(user: any, code: CODE, res: Response) {
+    const token   = user.getSignedJwtToken()
+    const options = {
+      expires : GLOBAL.COOKIE.EXP,
+      httpOnly: true,
+      secure  : false
+    }
+
+    if (GLOBAL.ENV === KEY.PRODUCTION) {
+      options.secure = true
+    }
+
+    res.status(code).cookie(GLOBAL.COOKIE.NAME, token, options).send(Resp.TokenResponse(token, user))
   }
 
   public static async createUser(data: any) {
