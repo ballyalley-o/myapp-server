@@ -5,7 +5,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "outDir": "./dist",
-    "rootDir": "./src" ,
+    "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
       "*": ["./*"],
@@ -19,9 +19,10 @@
     "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "typeRoots": ["types"]
+    "types": ["node", "jest"]
   },
   "tsc-alias": {
     "verbose": false,
@@ -31,6 +32,6 @@
       "outputCheck": ["js", "json", "jsx", "mjs"]
     }
   },
-  "include": ["**/*.ts", "**/*.js"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.js", "src"],
+  "exclude": ["node_modules", "dist"]
 }
