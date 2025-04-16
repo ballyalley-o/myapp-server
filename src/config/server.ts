@@ -14,7 +14,6 @@ import rateLimit from 'express-rate-limit'
 import { ServerStatic, mainRoute } from 'route'
 import { notFound, errorHandler, corsConfig, xssHandler } from 'middleware'
 import { KEY } from 'constant'
-import { connect } from 'utility'
 import { PATH_DIR } from './dir'
 
 const TAG = 'App'
@@ -73,9 +72,9 @@ class App {
 
   public start(): void {
     try {
-        this._app.listen(GLOBAL.PORT, () => {
-          goodlog.server(GLOBAL.PORT, GLOBAL.API_VERSION, this._env, true)
-        })
+      this._app.listen(GLOBAL.PORT, () => {
+        goodlog.server(GLOBAL.PORT, GLOBAL.API_VERSION, this._env, true)
+      })
     } catch (error: any) {
       process.on(KEY.UNHANDLED_REJECTION, (err: Error) => {
         goodlog.server(Number(GLOBAL.PORT), GLOBAL.API_VERSION, this._env, false)
