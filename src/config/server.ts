@@ -32,6 +32,10 @@ class App {
     newApp.start()
   }
 
+  get app() {
+    return this._app
+  }
+
   constructor() {
     this._app = express()
     this._app.use(express.json())
