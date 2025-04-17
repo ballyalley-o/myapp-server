@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { GLOBAL } from 'config/global'
+import { GLOBAL } from 'myapp'
 import DB_INDEX from 'config/db-index'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'

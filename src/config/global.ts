@@ -1,8 +1,5 @@
-import type { Connection } from 'mongoose'
-import { tenMin, oneDay, oneDayFromNow } from 'constant'
 import dotenv from 'dotenv'
 dotenv.config()
-
 
 export const GLOBAL = {
   APP_NAME       : process.env.APP_NAME || 'myapp',
@@ -10,20 +7,20 @@ export const GLOBAL = {
   PORT           : process.env.PORT || 3007,
   API_URL        : process.env.API_URL || '',
   API_VERSION    : process.env.API_VERSION || 'v1',
-  ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS?.split(',') || [],
+  ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',').map((s) => s.trim()): [],
   COOKIE         : {
     NAME: process.env.COOKIE_NAME || '',
-    EXP : oneDayFromNow
+    EXP :  new Date(Date.now() + 24 * 60 * 60 * 1000),
   },
-  DB_URI         : process.env.DB_URI,
-  DB_NAME        : (con: Connection) => con.name || 'sampleapp',
-  DB_HOST        : (con: Connection) => con.host || '',
-  ENCRYPTION     : {
+  DB_URI    : process.env.DB_URI || '',
+  DB_NAME   : (con: { name: string }) => con.name || 'sampleapp',
+  DB_HOST   : (con: { host: string }) => con.host || '',
+  ENCRYPTION: {
     ENCODING: process.env.ENCRYPTION_ENCODING || '',
-    ALG     : process.env.ENCRYPTION_ALG || '',
+    ALG: process.env.ENCRYPTION_ALG || '',
   },
   RATE_LIMIT: {
-    windowMs: tenMin,
+    windowMs: 10 * 60 * 1000,
     max     : 100,
   },
   LOG_LEVEL        : 'info',
@@ -31,8 +28,8 @@ export const GLOBAL = {
   LOG_FILENAME_COMB: 'log/combined.log',
   PAGINATION       : {
     DEFAULT_PAGE: 1,
-    LIMIT       : 25
+    LIMIT       : 25,
   },
-  JWT_EXP          : oneDay,
-  JWT_SECRET       : process.env.JWT_SECRET || '',
+  JWT_EXP   : 24 * 60 * 60 * 1000,
+  JWT_SECRET: process.env.JWT_SECRET || '',
 }

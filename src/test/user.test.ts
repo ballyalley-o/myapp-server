@@ -1,10 +1,14 @@
+/// <reference types="jest" />
+import { App } from 'myapp'
+import { GLOBAL } from 'config/global'
 import request from 'supertest'
 import mongoose from 'mongoose'
-import { App } from 'myapp'
 
 const app = App.app
 
 beforeAll(async () => {
+  console.log('process.env.DB_URI', process.env.DB_URI)
+  console.log('GLOBAL.DBURI', GLOBAL.DB_URI)
   await mongoose.connect(process.env.DB_URI || '')
 })
 
@@ -13,7 +17,7 @@ afterAll(async () => {
 })
 
 describe('User Route', () => {
-  let userId: string;
+  let userId: string
   it('should create a user', async () => {
     const res = await request(app).post('/auth/user').send({
       firstname: 'John',
@@ -51,5 +55,3 @@ describe('User Route', () => {
     expect(res.statusCode).toBe(200)
   })
 })
-
-
