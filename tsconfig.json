@@ -8,8 +8,9 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
-      "*": ["./*"],
-      "myapp": ["config/index.ts"]
+      "*": ["*"],
+      "myapp": ["config/index.ts"],
+      "route": ["route/index.ts"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -22,7 +23,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "types": ["node", "jest"]
+    "types": ["node"]
   },
   "tsc-alias": {
     "verbose": false,
@@ -32,6 +33,6 @@
       "outputCheck": ["js", "json", "jsx", "mjs"]
     }
   },
-  "include": ["**/*.ts", "**/*.js", "src"],
-  "exclude": ["node_modules", "dist"]
+  "include": [ "src/**/*.ts"],
+  "exclude": ["node_modules", "src/sim.ts", "dist"]
 }
