@@ -1,11 +1,11 @@
 import { CorsOptions } from "cors"
-import { GLOBAL } from "myapp"
+import { GLOBAL } from "config/global"
 import { RESPONSE } from "constant"
 
 const allowedOrigins = GLOBAL.ALLOWED_ORIGINS
 
 export const corsConfig = {
-    creentials: true,
+    credentials: true,
     origin: (origin: string, callback: (err: Error | null, allow?: boolean) => void) => {
         if (allowedOrigins.indexOf(origin || '') !== -1 || !origin) {
             callback(null, true)
