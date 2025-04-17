@@ -12,7 +12,8 @@ export class UserController {
             res.status(CODE.OK).json(res.advanceResult)
         } catch (error: any) {
             goodlog.error(error?.message || error, TAG, 'getUsers')
-            res.status(CODE.BAD_REQUEST).send(Resp.Error(error?.message))
+            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
+            res.status(code).send(Resp.Error(error?.message, code))
         }
     }
 
@@ -22,7 +23,8 @@ export class UserController {
             res.status(CODE.OK).send(Resp.Ok(user))
         } catch (error: any) {
             goodlog.error(error?.message || error, TAG, 'getUser')
-            res.status(CODE.BAD_REQUEST).send(Resp.Error(error?.message))
+            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
+            res.status(code).send(Resp.Error(error?.message, code))
         }
     }
 
@@ -32,29 +34,32 @@ export class UserController {
             res.status(CODE.CREATED).send(Resp.Created(newUser))
         } catch (error: any) {
             goodlog.error(error?.message || error, TAG, 'createUser')
-            res.status(CODE.BAD_REQUEST).send(Resp.Error(error?.message))
+            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
+            res.status(code).send(Resp.Error(error?.message, code))
         }
     }
 
     public static async updateUser(req: Request, res: Response, _next: NextFunction) {
         try {
-            const { _id } = req.body
-            const updatedUser = await Service.updateUser(_id, req.body)
+            const userId = req.params.id
+            const updatedUser = await Service.updateUser(userId, req.body)
             res.status(CODE.OK).send(Resp.Ok(updatedUser))
         } catch (error: any) {
             goodlog.error(error?.message || error, TAG, 'updateUser')
-            res.status(CODE.BAD_REQUEST).send(Resp.Error(error?.message))
+            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
+            res.status(code).send(Resp.Error(error?.message, code))
         }
     }
 
     public static async deleteUser(req: Request, res: Response, _next: NextFunction) {
         try {
-            const { _id } = req.body
-            const deletedUser = await Service.deleteUser(_id)
+            const userId = req.params.id
+            const deletedUser = await Service.deleteUser(userId)
             res.status(CODE.OK).send(Resp.Ok(deletedUser, 0, RESPONSE.SUCCESS.DELETED))
         } catch (error: any) {
             goodlog.error(error?.message || error, TAG, 'deleteUser')
-            res.status(CODE.BAD_REQUEST).send(Resp.Error(error?.message))
+            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
+            res.status(code).send(Resp.Error(error?.message,code))
         }
     }
 }

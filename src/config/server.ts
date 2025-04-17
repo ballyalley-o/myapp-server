@@ -25,10 +25,11 @@ class App {
 
   public static globalConfig = GLOBAL
 
-  static app() {
-    const newApp = new App()
-    newApp.connectDb()
-    newApp.start()
+  static async app(): Promise<express.Application> {
+    const instance = new App()
+    await instance.connectDb()
+    await instance.start()
+    return instance._app
   }
 
   get app() {
@@ -70,7 +71,7 @@ class App {
     }
   }
 
-  public start(): void {
+  public async start(): Promise<void> {
     try {
       this._app.listen(GLOBAL.PORT, () => {
         goodlog.server(GLOBAL.PORT, GLOBAL.API_VERSION, this._env, true)

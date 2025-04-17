@@ -1,15 +1,15 @@
 /// <reference types="jest" />
+import express from 'express'
 import { App } from 'myapp'
 import { GLOBAL } from 'config/global'
 import request from 'supertest'
 import mongoose from 'mongoose'
 
-const app = App.app
+let app: express.Application
 
 beforeAll(async () => {
-  console.log('process.env.DB_URI', process.env.DB_URI)
-  console.log('GLOBAL.DBURI', GLOBAL.DB_URI)
-  await mongoose.connect(process.env.DB_URI || '')
+  await mongoose.connect(GLOBAL.DB_URI || '')
+  app = await App.app()
 })
 
 afterAll(async () => {
@@ -19,11 +19,11 @@ afterAll(async () => {
 describe('User Route', () => {
   let userId: string
   it('should create a user', async () => {
-    const res = await request(app).post('/auth/user').send({
-      firstname: 'John',
+    const res = await request(app).post('/api/v1/auth/user').send({
+      firstname: 'John_test',
       lastname : 'Doe',
-      email    : 'john@example.com',
-      password : '123456',
+      email    : 'john_test@example.com',
+      password : '123456'
     })
 
     expect(res.statusCode).toBe(201)
@@ -31,27 +31,53 @@ describe('User Route', () => {
     userId = res.body.data._id
   })
 
+  it('should throw unsuccessful response if user already exists', async () => {
+    const res = await request(app).post(`/api/v1/auth/user`).send({ email: 'john_test@example.com' })
+
+    expect(res.statusCode).toBe(409)
+    expect(res.body.success).toBe(false)
+    expect(res.body.message).toMatch(/Document already exists/i)
+  })
+
   it('should get all users', async () => {
-    const res = await request(app).get('/auth/user')
+    const res = await request(app).get('/api/v1/auth/user')
     expect(res.statusCode).toBe(200)
     expect(Array.isArray(res.body.data)).toBe(true)
   })
 
   it('should get a user by id', async () => {
-    const res = await request(app).get(`/auth/user/${userId}`)
+    const res = await request(app).get(`/api/v1/auth/user/${userId}`)
     expect(res.statusCode).toBe(200)
     expect(res.body.data).toHaveProperty('_id', userId)
   })
 
   it('should update a user', async () => {
-    const res = await request(app).put(`/auth/user/${userId}`).send({ firstname: 'Jane' })
+    const res = await request(app).put(`/api/v1/auth/user/${userId}`).send({ firstname: 'Jane' })
 
     expect(res.statusCode).toBe(200)
     expect(res.body.data.firstname).toBe('Jane')
   })
 
+  it('should throw unsuccessful response if user does not exist', async () => {
+    const fakeId = new mongoose.Types.ObjectId().toHexString()
+    const res    = await request(app).put(`/api/v1/auth/user/${fakeId}`).send({ firstname: 'Ghosty' })
+
+    expect(res.statusCode).toBe(404)
+    expect(res.body.success).toBe(false)
+    expect(res.body.message).toMatch(/Failed to find the requested document/i)
+  })
+
   it('should delete a user', async () => {
-    const res = await request(app).delete(`/auth/user/${userId}`)
+    const res = await request(app).delete(`/api/v1/auth/user/${userId}`)
     expect(res.statusCode).toBe(200)
+    expect(res.body.data).toStrictEqual({})
+  })
+   it('should throw unsuccessful response if user does not exist before delete', async () => {
+    const fakeId = new mongoose.Types.ObjectId().toHexString()
+    const res    = await request(app).delete(`/api/v1/auth/user/${fakeId}`).send({ firstname: 'Huey' })
+
+    expect(res.statusCode).toBe(404)
+    expect(res.body.success).toBe(false)
+    expect(res.body.message).toMatch(/Failed to find the requested document/i)
   })
 })
