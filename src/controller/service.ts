@@ -11,7 +11,7 @@ export class Service {
   public static async checkExistence(
     model       : Model<any>,
     query       : Record<string,                         any>,
-    errorMessage: string = RESPONSE.ERROR.RECORD_EXISTS,
+    errorMessage: string = RESPONSE.ERROR.DOCUMENT_EXISTS,
     errorCode   : CODE = CODE.CONFLICT
   ): Promise<void> {
     const record = await model.findOne(query)
@@ -38,7 +38,7 @@ export class Service {
   public static async createUser(data: any) {
     const { email } = data
 
-    await Service.checkExistence(User, { email }, RESPONSE.ERROR.RECORD_EXISTS)
+    await Service.checkExistence(User, { email }, RESPONSE.ERROR.DOCUMENT_EXISTS)
     const newUser = await User.create(data)
     return newUser
   }
