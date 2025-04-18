@@ -18,6 +18,10 @@ declare global {
       data       : unknown[]
     }
 
+    declare interface IRequestUser extends Request {
+      user: { id  : string, role: Role }
+    }
+
     namespace Express {
         interface Response {
           advanceResult: AdvancedResults

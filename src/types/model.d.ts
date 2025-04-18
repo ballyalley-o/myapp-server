@@ -13,7 +13,7 @@ declare type IndexType<T extends Record<string, number>> = {
     [K in typeof T]: IndexDirection }
 
 type Model = IUser
-type Role  = 'customer' | 'admin'
+declare type Role  = 'customer' | 'admin'
 
 
 declare interface IUser {
