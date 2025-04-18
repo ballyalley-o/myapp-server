@@ -37,7 +37,7 @@ export const errorHandler = (err: ErrorRequestHandler, _req: Request, res: Respo
 
  if (err.code === 11000) {
     statusCode = 403
-    throw new Error(RESPONSE.ERROR.RECORD_EXISTS)
+    throw new Error(RESPONSE.ERROR.DOCUMENT_EXISTS)
  }
 
  if (err.errors) {
