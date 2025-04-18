@@ -38,9 +38,9 @@ export class Resp extends AbstractLogger {
   public static Ok(data: unknown, count?: number, message?: string) {
     return {
       success: true,
-      code: CODE.OK,
+      code   : CODE.OK,
       message: message || RESPONSE.SUCCESS[200],
-      count: count && count,
+      count  : count && count,
       data,
     }
   }
@@ -48,7 +48,7 @@ export class Resp extends AbstractLogger {
   public static Created(data: unknown, message?: string) {
     return {
       success: true,
-      code: CODE.CREATED,
+      code   : CODE.CREATED,
       message: message || RESPONSE.SUCCESS[201],
       data,
     }
@@ -83,25 +83,15 @@ export class Resp extends AbstractLogger {
 }
 
 export const RESPONSE = {
-  SERVER: (_req: Request, res: Response) => {
-    const response = {
-      name: GLOBAL.APP_NAME,
-      status: 'Running',
-      version: GLOBAL.API_VERSION,
-      environment: GLOBAL.ENV,
-    }
-    res.send(response)
-  },
-
   SUCCESS: {
-    200: 'OK: Request is successful',
-    201: 'CREATED: Docuemnt created',
-    204: 'NO CONTENT: The server successfully processed the request but there is no content to send in the response.',
-    PHOTO_UPLOADED: 'OK: Photo Uploaded',
-    BADGE_UPLOADED: 'OK: Badge Uploaded',
-    AVATAR_UPLOADED: 'OK: Avatar Uploaded',
-    COURSES_DELETED: (data: string) => `Courses being deleted from bootcamp ID: ${data}. Reload page to see the effect`,
-    COLLECTION_SEED: ' Mock migration successful 🌱 ',
+    200                 : 'OK: Request is successful',
+    201                 : 'CREATED: Docuemnt created',
+    204                 : 'NO CONTENT: The server successfully processed the request but there is no content to send in the response.',
+    PHOTO_UPLOADED      : 'OK: Photo Uploaded',
+    BADGE_UPLOADED      : 'OK: Badge Uploaded',
+    AVATAR_UPLOADED     : 'OK: Avatar Uploaded',
+    COURSES_DELETED     : (data: string) => `Courses being deleted from bootcamp ID: ${data}. Reload page to see the effect`,
+    COLLECTION_SEED     : ' Mock migration successful 🌱 ',
     COLLECTION_DESTROYED: ' Collection/s destroyed 💥 ',
     LOGOUT              : `User logged out`,
     UPDATED             : `Update successful`,
