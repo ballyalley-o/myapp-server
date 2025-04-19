@@ -5,14 +5,14 @@ import { User } from 'model'
 import { CODE, fiveSecFromNow, KEY, Resp, RESPONSE } from 'constant'
 
 const TAG = 'Auth.Controller'
-export class Auth {
+export class AuthController {
     public static async signIn(req: Request, res: Response, _next: NextFunction) {
         try {
             const { email, password }  = req.body
 
             if (!email || !password) Service.invalid()
 
-            const user = await User.findOne({ email }).select(KEY.PASSWORD) || Service.invalid()
+            const user = await User.findOne({ email }).select(KEY.ADD_PASSWORD) || Service.invalid()
 
             await user.matchPassword(password) || Service.invalid()
 
@@ -25,7 +25,9 @@ export class Auth {
     public static async signUp(req: Request, res: Response, _next: NextFunction) {
         try {
             const { email } = req.body
-            await User.findOne({ email }) || Service.alreadyExist(email)
+            const userExists = await User.findOne({ email })
+
+            if (userExists) Service.alreadyExist(email)
 
             const newUser = await User.create(req.body)
 
@@ -48,8 +50,11 @@ export class Auth {
         }
     }
 
-    public static async myAccount(req: IRequestUser, res: Response, _next: NextFunction) {
+    public static async myAccount(req: Request, res: Response, _next: NextFunction) {
         try {
+            if (!req.user?.id) {
+                return Service.invalid(RESPONSE.ERROR[401], CODE.UNAUTHORIZED)
+            }
             const user = await User.findById(req.user.id) || Service.notFound()
             res.status(CODE.OK).send(Resp.Ok(user))
         } catch (error: any) {
@@ -57,14 +62,14 @@ export class Auth {
         }
     }
 
-    public static async updateAccount(req: IRequestUser, res: Response, _next: NextFunction) {
+    public static async updateAccount(req: Request, res: Response, _next: NextFunction) {
         try {
             const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {
                 new          : true,
                 runValidators: true
-            }) || Service.notFound()
+            }).select(KEY.REMOVE_PASSWORD) || Service.notFound()
 
-            res.status(CODE.OK).send(Resp.Ok({ data: updatedUser, message: RESPONSE.SUCCESS.UPDATED }))
+            res.status(CODE.OK).send(Resp.Ok(updatedUser))
         } catch (error: any) {
             Service.catchError(error, TAG, 'updateAccount', res)
         }
