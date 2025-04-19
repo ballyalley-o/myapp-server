@@ -41,7 +41,7 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     },
     password: {
       type: String,
-      required: [true, getLocale('validation.default.length', { field: 'Password' })],
+      required: [true, getLocale('validation.default.length', { field: 'Password', min: 6, max: 20 })],
       min: 6,
       select: false,
     }
