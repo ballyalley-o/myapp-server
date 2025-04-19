@@ -1,4 +1,6 @@
 export * from './advanced-result'
+export * from './async-handler'
+export * from './auth-protect'
 export * from './cors-config'
 export * from './error'
 export * from './not-found'
