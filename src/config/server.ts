@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser'
 import mongoSanitize from 'express-mongo-sanitize'
 import helmet from 'helmet'
 import hpp from 'hpp'
-import rateLimit from 'express-rate-limit'
+import rateLimit, { Options } from 'express-rate-limit'
 import { ServerStatic, mainRoute } from 'route'
 import { notFound, errorHandler, corsConfig, xssHandler } from 'middleware'
 import { KEY } from 'constant'
@@ -47,7 +47,7 @@ class App {
     // this._app.use(mongoSanitize({ replaceWith: '_' }))
     this._app.use(helmet())
     this._app.use(xssHandler)
-    this._app.use(rateLimit(GLOBAL.RATE_LIMIT))
+    this._app.use(rateLimit(GLOBAL.RATE_LIMIT as Partial<Options>))
     this._app.use(hpp())
     this.registerRoute()
     this._app.use(errorHandler)

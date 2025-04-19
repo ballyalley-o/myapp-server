@@ -5,7 +5,7 @@ import { KEY, RESPONSE, CODE } from "constant"
 
 class ErrorRequestHandler extends Error {
     kind  : string
-    code  : string | number
+    code  : number
     errors: any[]
 
     constructor(message: string, kind: string, code: number, errors: any[]) {
@@ -26,7 +26,7 @@ export class ErrorResponse extends Error {
 }
 
 export const errorHandler = (err: ErrorRequestHandler, _req: Request, res: Response, _next: NextFunction) => {
- let statusCode = res.statusCode === 0 ? 500 : res.statusCode
+ let statusCode = err.code || CODE.INTERNAL_SERVER_ERROR
  let message    = err.message
  let errors     = err.errors
 
@@ -37,7 +37,7 @@ export const errorHandler = (err: ErrorRequestHandler, _req: Request, res: Respo
 
  if (err.code === 11000) {
     statusCode = 403
-    throw new Error(RESPONSE.ERROR.DOCUMENT_EXISTS)
+    message    = RESPONSE.ERROR.DOCUMENT_EXISTS
  }
 
  if (err.errors) {

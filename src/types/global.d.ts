@@ -22,7 +22,21 @@ declare global {
       user: { id  : string, role: Role }
     }
 
-    namespace Express {
+    declare interface DecodedToken {
+      id : string
+      iat: number,
+      exp: number
+    }
+
+    declare type AsyncHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>
+
+    declare namespace Express {
+        interface Request {
+          user: {
+            id  : string
+            role: Role
+          }
+        }
         interface Response {
           advanceResult: AdvancedResults
         }
