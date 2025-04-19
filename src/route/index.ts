@@ -1,8 +1,8 @@
 import { Application } from 'express'
-import { linkUserRoute } from 'route/user'
+import { linkAuthRoute } from 'route/auth'
 
 export const mainRoute = (app: Application, apiVer: string) => {
-    linkUserRoute(app, apiVer)
+    linkAuthRoute(app, apiVer)
 }
 
 export { default as ServerStatic } from './server-static'
