@@ -11,9 +11,7 @@ export class UserController {
         try {
             res.status(CODE.OK).json(res.advanceResult)
         } catch (error: any) {
-            goodlog.error(error?.message || error, TAG, 'getUsers')
-            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
-            res.status(code).send(Resp.Error(error?.message, code))
+            Service.catchError(error, TAG, 'getUsers', res)
         }
     }
 
@@ -22,9 +20,7 @@ export class UserController {
             const user = await User.findById(req.params.id)
             res.status(CODE.OK).send(Resp.Ok(user))
         } catch (error: any) {
-            goodlog.error(error?.message || error, TAG, 'getUser')
-            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
-            res.status(code).send(Resp.Error(error?.message, code))
+            Service.catchError(error, TAG, 'getUser', res)
         }
     }
 
@@ -33,9 +29,7 @@ export class UserController {
             const newUser = await Service.createUser(req.body)
             res.status(CODE.CREATED).send(Resp.Created(newUser))
         } catch (error: any) {
-            goodlog.error(error?.message || error, TAG, 'createUser')
-            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
-            res.status(code).send(Resp.Error(error?.message, code))
+            Service.catchError(error, TAG, 'createUser', res)
         }
     }
 
@@ -45,9 +39,7 @@ export class UserController {
             const updatedUser = await Service.updateUser(userId, req.body)
             res.status(CODE.OK).send(Resp.Ok(updatedUser))
         } catch (error: any) {
-            goodlog.error(error?.message || error, TAG, 'updateUser')
-            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
-            res.status(code).send(Resp.Error(error?.message, code))
+            Service.catchError(error, TAG, 'updateUser', res)
         }
     }
 
@@ -57,9 +49,7 @@ export class UserController {
             const deletedUser = await Service.deleteUser(userId)
             res.status(CODE.OK).send(Resp.Ok(deletedUser, 0, RESPONSE.SUCCESS.DELETED))
         } catch (error: any) {
-            goodlog.error(error?.message || error, TAG, 'deleteUser')
-            const code = error instanceof ErrorResponse ? error.code : CODE.BAD_REQUEST
-            res.status(code).send(Resp.Error(error?.message,code))
+            Service.catchError(error, TAG, 'deleteUser', res)
         }
     }
 }
