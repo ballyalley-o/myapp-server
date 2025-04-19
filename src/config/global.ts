@@ -21,7 +21,7 @@ export const GLOBAL = {
   },
   RATE_LIMIT: {
     windowMs: 10 * 60 * 1000,
-    max     : 100,
+    max     : process.env.MAX_RATE_LIMIT
   },
   LOG_LEVEL        : 'info',
   LOG_FILENAME_ERR : 'log/error.log',
