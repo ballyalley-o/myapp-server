@@ -34,5 +34,5 @@
     }
   },
   "include": [ "src/**/*.ts"],
-  "exclude": ["node_modules", "src/sim.ts", "dist"]
+  "exclude": ["node_modules", "dist"]
 }
