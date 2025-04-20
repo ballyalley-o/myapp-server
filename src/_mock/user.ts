@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs'
+import argon2 from 'argon2'
 import ObjectID from "bson-objectid"
 
 export const user = [
@@ -8,7 +8,7 @@ export const user = [
     lastname : 'Mrrero',
     role     : 'customer',
     email    : 'tina@test.com',
-    password : bcrypt.hashSync('123456', 10),
+    password : argon2.hash('123456')
   },
   {
     _id      : ObjectID('65d44d6ef8e810489db6a59c'),
@@ -16,7 +16,7 @@ export const user = [
     lastname : 'Balboa',
     role     : 'customer',
     email    : 'rocky@boxing.com',
-    password : bcrypt.hashSync('123456', 10),
+    password : argon2.hash('123456')
   },
   {
     _id      : ObjectID('65d44d6ef8e810489db6a59d'),
@@ -24,6 +24,6 @@ export const user = [
     lastname : 'Brown',
     role     : 'admin',
     email    : 'emily@example.com',
-    password : bcrypt.hashSync('123456', 10),
+    password : argon2.hash('123456')
   },
 ]
