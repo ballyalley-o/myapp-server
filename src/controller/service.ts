@@ -55,9 +55,6 @@ export class Service {
   }
 
   public static async createUser(data: any) {
-    const { email } = data
-
-    await Service.checkExistence(User, { email }, RESPONSE.ERROR.DOCUMENT_EXISTS)
     const newUser = await User.create(data)
     return newUser
   }
