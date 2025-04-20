@@ -61,11 +61,23 @@ UserSchema.pre('save', async function(next) {
         next()
     }
 
+    const hashTypeMap = {
+      argon2d : argon2.argon2d,
+      argon2i : argon2.argon2i,
+      argon2id: argon2.argon2id
+    } as const
+
+    const type = hashTypeMap[GLOBAL.HASH.TYPE as keyof typeof hashTypeMap]
+
+    if (!type) {
+      throw new Error(`Invalid hash type: ${GLOBAL.HASH.TYPE}`)
+    }
+
     this.password = await argon2.hash(this.password, {
-      type       : argon2.argon2id,
-      memoryCost : 19456,
-      timeCost   : 2,
-      parallelism: 1
+      type       : type,
+      memoryCost : GLOBAL.HASH.MEMORY_COST,
+      timeCost   : GLOBAL.HASH.TIME_COST,
+      parallelism: GLOBAL.HASH.PARALLELISM
     })
 })
 
