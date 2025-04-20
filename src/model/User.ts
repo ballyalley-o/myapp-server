@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose'
 import { GLOBAL } from 'myapp'
 import DB_INDEX from 'config/db-index'
-import bcrypt from 'bcrypt'
+// import bcrypt from 'bcrypt'
+import argon2 from 'argon2'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { oneDayFromNow, REGEX } from 'constant'
@@ -59,8 +60,13 @@ UserSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
         next()
     }
-    const salt          = await bcrypt.genSalt(8)
-          this.password = await bcrypt.hash(this.password, salt)
+
+    this.password = await argon2.hash(this.password, {
+      type       : argon2.argon2id,
+      memoryCost : 19456,
+      timeCost   : 2,
+      parallelism: 1
+    })
 })
 
 UserSchema.methods.getSignedJwtToken = function () {
@@ -70,7 +76,7 @@ UserSchema.methods.getSignedJwtToken = function () {
 }
 
 UserSchema.methods.matchPassword = async function (enteredPassword: string) {
-    return await bcrypt.compare(enteredPassword, this.password)
+    return await argon2.verify(this.password, enteredPassword)
 }
 
 UserSchema.methods.getResetPasswordToken = function () {
