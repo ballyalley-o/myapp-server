@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import goodlog from 'good-logs'
 import { User } from 'model'
-import { ErrorResponse } from 'middleware'
 import { Service } from 'controller'
 import { CODE, Resp, RESPONSE } from 'constant'
 
