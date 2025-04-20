@@ -11,10 +11,10 @@ const TAG = 'User'
 const UserSchema: Schema<IUser> = new Schema<IUser>(
   {
     firstname: {
-      type: String,
+      type    : String,
       required: [true, getLocale('validation.default.required', { field: 'Firstname' })],
-      min: 3,
-      max: 20,
+      min     : 3,
+      max     : 20,
       validate: {
         validator: function (v: string) {
           return v.length > 3 && v.length < 20
@@ -24,8 +24,8 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     },
 
     lastname: {
-      type: String,
-      max: 20,
+      type    : String,
+      max     : 20,
       validate: {
         validator: function (v: string) {
           return v.length < 20
@@ -34,16 +34,17 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
       },
     },
     email: {
-      type: String,
+      type    : String,
       required: [true, getLocale('validation.default.length', { field: 'Email' })],
-      unique: [true, getLocale('validation.default.unique', { field: 'Email' })],
-      match: [REGEX.EMAIL, getLocale('validation.default.invalid', { field: 'email' })],
+      unique  : [true, getLocale('validation.default.unique', { field: 'Email' })],
+      match   : [REGEX.EMAIL, getLocale('validation.default.invalid', { field: 'email' })],
+      index   : true
     },
     password: {
-      type: String,
+      type    : String,
       required: [true, getLocale('validation.default.length', { field: 'Password', min: 6, max: 20 })],
-      min: 6,
-      select: false,
+      min     : 6,
+      select  : false,
     }
   },
   {
@@ -58,7 +59,7 @@ UserSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
         next()
     }
-    const salt          = await bcrypt.genSalt(10)
+    const salt          = await bcrypt.genSalt(8)
           this.password = await bcrypt.hash(this.password, salt)
 })
 
