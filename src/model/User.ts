@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { GLOBAL } from 'myapp'
 import DB_INDEX from 'config/db-index'
-// import bcrypt from 'bcrypt'
 import argon2 from 'argon2'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
